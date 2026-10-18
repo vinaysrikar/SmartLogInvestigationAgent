@@ -1,0 +1,17 @@
+2026-10-17 08:30:00.100 [INFO] [kubelet] [node=node-worker-us-east-1a] Pod billing-worker-7c49f8749f-x9l2z container billing-worker started
+2026-10-17 08:30:05.230 [INFO] [billing-worker] Starting batch invoice generation for 120,000 pending merchant records
+2026-10-17 08:30:15.500 [INFO] [billing-worker] Loading customer accounts into in-memory cache... (allocated 450MB)
+2026-10-17 08:30:30.120 [WARN] [billing-worker] Memory consumption high: JVM Heap usage 1450MB / 1800MB limit (80.5%)
+2026-10-17 08:30:45.890 [WARN] [billing-worker] Garbage collection duration exceeded 2500ms (Stop-the-World pause)
+2026-10-17 08:30:52.340 [ERROR] [billing-worker] java.lang.OutOfMemoryError: Java heap space
+java.lang.OutOfMemoryError: Java heap space
+	at java.base/java.util.Arrays.copyOf(Arrays.java:3720)
+	at java.base/java.util.ArrayList.grow(ArrayList.java:237)
+	at java.base/java.util.ArrayList.add(ArrayList.java:214)
+	at com.company.billing.processor.BatchInvoiceJob.loadTransactions(BatchInvoiceJob.java:189)
+	at com.company.billing.processor.BatchInvoiceJob.execute(BatchInvoiceJob.java:76)
+2026-10-17 08:30:54.005 [WARN] [kubelet] [node=node-worker-us-east-1a] Container billing-worker memory usage 2097152000 exceeded cgroup limit 2097152000 (2Gi)
+2026-10-17 08:30:54.120 [FATAL] [kubelet] [node=node-worker-us-east-1a] Killing container billing-worker: OOMKilled (Exit Code 137)
+2026-10-17 08:30:55.200 [ERROR] [kubernetes-events] Readiness probe failed for pod billing-worker-7c49f8749f-x9l2z: Get "http://10.244.1.45:8080/health/ready": dial tcp 10.244.1.45:8080: connect: connection refused
+2026-10-17 08:31:05.100 [WARN] [kube-controller] Pod billing-worker-7c49f8749f-x9l2z entering CrashLoopBackOff (restartCount=3)
+2026-10-17 08:31:20.400 [ERROR] [rabbitmq-consumer] Invoice message queue accumulation: 45,210 unconsumed messages. SLA breach imminent.

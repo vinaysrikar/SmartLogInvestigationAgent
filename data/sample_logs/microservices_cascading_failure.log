@@ -1,0 +1,33 @@
+2026-10-17 14:00:01.120 [INFO] [api-gateway] [trace_id=a100-01] Received GET /health status=200 latency=1.2ms
+2026-10-17 14:00:05.450 [INFO] [order-service] [trace_id=a100-02] Processing order validation for cart_id=89231
+2026-10-17 14:00:10.200 [INFO] [inventory-service] [trace_id=a100-03] Stock confirmed for sku=SKU-4821 quantity=1
+2026-10-17 14:00:15.890 [INFO] [auth-service] [trace_id=a100-04] Token verified for user_id=usr_99120
+2026-10-17 14:01:00.012 [INFO] [traffic-gen] Flash sale promotion event triggered. Concurrency set to 250 req/sec
+2026-10-17 14:01:12.330 [WARN] [postgres-primary] [connection-manager] Active connections reached 88/100 (Threshold 85%)
+2026-10-17 14:01:25.104 [WARN] [postgres-primary] [connection-manager] Active connections reached 98/100. Connection pool near exhaustion.
+2026-10-17 14:01:30.500 [ERROR] [postgres-primary] [connection-manager] FATAL: remaining connection slots are reserved for non-replication superuser connections
+2026-10-17 14:01:30.982 [ERROR] [postgres-primary] [query-executor] Could not acquire connection from pool hikari-cp within timeout 30000ms
+2026-10-17 14:01:31.420 [ERROR] [auth-service] [trace_id=bf81-99] Database error while validating session for user_id=usr_54123
+org.postgresql.util.PSQLException: Connection checkout timed out after 30000ms.
+	at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:217)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:100)
+	at com.company.auth.service.SessionValidator.verifyToken(SessionValidator.java:84)
+	at com.company.auth.controller.AuthController.validate(AuthController.java:42)
+2026-10-17 14:01:32.110 [ERROR] [auth-service] [trace_id=bf82-01] org.postgresql.util.PSQLException: Connection checkout timed out after 30000ms.
+2026-10-17 14:01:33.205 [ERROR] [auth-service] [trace_id=bf82-05] HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2026-10-17 14:01:35.400 [WARN] [order-service] [trace_id=c001-12] Auth service latency degraded: 5020ms
+2026-10-17 14:01:38.810 [ERROR] [order-service] [trace_id=c001-19] CircuitBreaker 'authService' is OPEN. Falling back to rejection.
+io.github.resilience4j.circuitbreaker.CallNotPermittedException: CircuitBreaker 'authService' is OPEN and does not permit further calls
+	at io.github.resilience4j.circuitbreaker.CircuitBreaker.acquirePermission(CircuitBreaker.java:140)
+	at com.company.order.client.AuthClient.validateUser(AuthClient.java:55)
+	at com.company.order.service.OrderProcessor.process(OrderProcessor.java:92)
+2026-10-17 14:01:40.015 [ERROR] [api-gateway] [trace_id=gw-8812] Upstream service auth-service failed to respond within 5000ms. Responding HTTP 504 Gateway Timeout
+2026-10-17 14:01:41.220 [ERROR] [api-gateway] [trace_id=gw-8813] Upstream service order-service circuit broken. Responding HTTP 503 Service Unavailable
+2026-10-17 14:01:42.500 [ERROR] [checkout-frontend] [trace_id=fe-1090] Uncaught exception in CheckoutSubmitHandler: User session payload was null
+java.lang.NullPointerException: Cannot invoke "com.company.checkout.model.UserSession.getUserId()" because "session" is null
+	at com.company.checkout.service.CheckoutService.submitOrder(CheckoutService.java:112)
+	at com.company.checkout.controller.CheckoutController.handlePost(CheckoutController.java:65)
+2026-10-17 14:01:45.010 [ERROR] [api-gateway] [trace_id=gw-8820] HTTP 504 Gateway Timeout for uri=/api/v1/checkout/submit
+2026-10-17 14:01:47.330 [ERROR] [api-gateway] [trace_id=gw-8825] HTTP 504 Gateway Timeout for uri=/api/v1/checkout/submit
+2026-10-17 14:01:50.120 [ERROR] [checkout-frontend] [trace_id=fe-1099] Customer checkout failure rate exceeded SLA: 84.6% failed requests
+2026-10-17 14:02:00.000 [WARN] [sre-monitor] Alert fired: Severity P1 - High Error Rate (>50%) on api-gateway and checkout-frontend

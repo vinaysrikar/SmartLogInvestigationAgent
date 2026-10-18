@@ -1,0 +1,18 @@
+2026-10-17 02:14:01.010 [INFO] [web-gateway] [client_ip=198.51.100.42] POST /api/v1/auth/login status=401 user=admin latency=15ms
+2026-10-17 02:14:01.450 [INFO] [web-gateway] [client_ip=198.51.100.42] POST /api/v1/auth/login status=401 user=root latency=14ms
+2026-10-17 02:14:01.880 [INFO] [web-gateway] [client_ip=198.51.100.42] POST /api/v1/auth/login status=401 user=administrator latency=13ms
+2026-10-17 02:14:02.310 [INFO] [web-gateway] [client_ip=198.51.100.42] POST /api/v1/auth/login status=401 user=superuser latency=14ms
+2026-10-17 02:14:02.800 [WARN] [auth-waf] [client_ip=198.51.100.42] Multiple failed authentication attempts detected (count=12 in 5s). Threshold warning.
+2026-10-17 02:14:03.200 [INFO] [web-gateway] [client_ip=198.51.100.42] POST /api/v1/auth/login status=401 user=dev latency=12ms
+2026-10-17 02:14:04.100 [INFO] [web-gateway] [client_ip=198.51.100.42] POST /api/v1/auth/login status=401 user=test latency=12ms
+2026-10-17 02:14:10.050 [WARN] [web-gateway] [client_ip=198.51.100.42] GET /api/v1/catalog?search=' UNION SELECT username,password_hash FROM users-- status=500
+2026-10-17 02:14:10.055 [ERROR] [catalog-service] [trace_id=sec-9011] Database query syntax error detected during SQL execution
+org.postgresql.util.PSQLException: ERROR: each UNION query must have the same number of columns
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at com.company.catalog.repository.ProductRepository.search(ProductRepository.java:78)
+	at com.company.catalog.service.SearchService.execute(SearchService.java:34)
+2026-10-17 02:14:15.220 [WARN] [web-gateway] [client_ip=198.51.100.42] GET /api/v1/catalog?search=' UNION SELECT username,password_hash,id,created_at FROM users-- status=200
+2026-10-17 02:14:18.450 [ERROR] [audit-logger] [client_ip=198.51.100.42] Excessive row export detected: 25,400 user records queried via endpoint /api/v1/catalog
+2026-10-17 02:14:22.100 [WARN] [waf-engine] [client_ip=198.51.100.42] Suspicious pattern matched rule WAF-SQLI-004: 'UNION SELECT' detected in query parameters
+2026-10-17 02:14:30.800 [ERROR] [admin-service] [client_ip=198.51.100.42] Unauthorized attempt to invoke /api/v1/admin/sudo_grant with invalid JWT bearer signature
+2026-10-17 02:14:35.000 [FATAL] [security-monitor] Security Alert: Critical data breach risk detected from IP 198.51.100.42 (Brute force + SQL injection + Credential Dump)
